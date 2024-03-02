@@ -21,7 +21,7 @@ void setup ()
       }
     }
     
-  for(int i=0; i<7; i++)  
+  for(int i=0; i<10; i++)  
   setMines();
 }
 public void setMines()
@@ -68,7 +68,7 @@ public void displayLosingMessage()
 }
 public void displayWinningMessage()
 {
-  for (int r=0; r<3;r++){
+  for (int r=0; r<2;r++){
       for (int c=0; c<3; c++){
        buttons[r][c].flagged=false;
        buttons[r][c].clicked=false; 

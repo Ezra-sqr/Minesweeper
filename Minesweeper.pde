@@ -1,12 +1,13 @@
 import de.bezier.guido.*;
-public static final int NUM_ROWS=10;
-public static final int NUM_COLS=10;
+public static final int NUM_ROWS=15;
+public static final int NUM_COLS=15;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> mines; //ArrayList of just the minesweeper buttons that are mined
+public boolean firstClick=true;
 
 void setup ()
 {
-    size(400, 400);
+    size(600, 600);
     textAlign(CENTER,CENTER);
     
     // make the manager
@@ -20,16 +21,15 @@ void setup ()
         buttons[r][c]=new MSButton(r,c);
       }
     }
-    
-  for(int i=0; i<10; i++)  
-  setMines();
 }
 public void setMines()
 {
  int MyRow=(int)(Math.random()*NUM_ROWS);
  int MyCol=(int)(Math.random()*NUM_COLS);
-  if (!mines.contains(buttons[MyRow][MyCol]))
+  if (!mines.contains(buttons[MyRow][MyCol])&&buttons[MyRow][MyCol].safe==false){
   mines.add(buttons[MyRow][MyCol]);
+System.out.println(MyRow+","+MyCol);  
+}
 }
 
 public void draw ()
@@ -108,23 +108,35 @@ public class MSButton
     private float x,y, width, height;
     private boolean clicked, flagged;
     private String myLabel;
+    private boolean safe;
     
     public MSButton ( int row, int col )
     {
-        width = 400/NUM_COLS;
-        height = 400/NUM_ROWS;
+        width = 600/NUM_COLS;
+        height = 600/NUM_ROWS;
         myRow = row;
         myCol = col; 
         x = myCol*width;
         y = myRow*height;
         myLabel = "";
-        flagged = clicked = false;
+        flagged = clicked = safe = false;
         Interactive.add( this ); // register it with the manager
     }
 
     // called by manager
     public void mousePressed () 
     {
+      if(firstClick==true){
+        for (int i=myRow-1; i<=myRow+1; i++){
+       for (int k=myCol-1; k<=myCol+1; k++){
+         if (isValid(i,k))
+           buttons[i][k].safe=true;
+       }
+        }
+         for(int i=0; i<=20; i++)  
+          setMines();
+    }
+        firstClick= false;
         clicked = true;
         if(mouseButton==RIGHT){
          if(flagged==true){
@@ -163,9 +175,9 @@ public class MSButton
         else if( clicked && mines.contains(this)) 
            fill(255,0,0);
         else if(clicked)
-            fill( 200 );
+            fill( 100,80,50);
         else 
-            fill( 100 );
+            fill( 50,100,10 );
 
         rect(x, y, width, height);
         fill(0);

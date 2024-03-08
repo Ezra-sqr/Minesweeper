@@ -28,7 +28,6 @@ public void setMines()
  int MyCol=(int)(Math.random()*NUM_COLS);
   if (!mines.contains(buttons[MyRow][MyCol])&&buttons[MyRow][MyCol].safe==false){
   mines.add(buttons[MyRow][MyCol]);
-System.out.println(MyRow+","+MyCol);  
 }
 }
 
